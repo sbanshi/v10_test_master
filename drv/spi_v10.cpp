@@ -4,7 +4,8 @@
  *      Author: nikhil
  */
 
-#include "spi_v8.h"
+#include "spi_v10.h"
+#include <math.h>
 
 #define SPI_F2		0
 #define SPI_F4		(SPI_CR1_BR_0)
@@ -32,7 +33,7 @@ static const SPIConfig spi2cfg = {
 static const SPIConfig spi4cfg = {
   NULL,
   GPIOE,
-  4,
+  3,
   SPI_F265
 };
 
@@ -196,7 +197,7 @@ uint16_t ms_prom[8];
 void start_ms_spi(void){
 
 	spiStart(&SPID4, &spi4cfg);
-	palSetPad(GPIOE, 4);
+	palSetPad(GPIOE, 3);
 
 	delay(20);
 
@@ -225,6 +226,9 @@ void start_ms_spi(void){
 
 }
 
+float ground_press = 1;
+float ground_temp = 25;
+float press_cnt = 0 ;
 void get_ms_data(void){
 
 	uint8_t txbuf[3], rxbuf[18];
@@ -266,8 +270,58 @@ void get_ms_data(void){
 
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
-	debug("Ms D1 %u, D2 %u", D1, D2);
+//	debug("Ms D1 %u, D2 %u", D1, D2);
 
+	float dT;
+	float TEMP;
+	int64_t OFF;
+	int64_t SENS;
+	float P;
+
+	// Formulas from manufacturer datasheet
+	// sub -20c temperature compensation is not included
+
+	// we do the calculations using floating point
+	// as this is much faster on an AVR2560, and also allows
+	// us to take advantage of the averaging of D1 and D1 over
+	// multiple samples, giving us more precision
+	dT = (float)D2-(((float)ms_prom[4])*256.0f);
+	TEMP = (float)(((int64_t)dT * (int64_t)ms_prom[5]) >> 23);
+	OFF = (int64_t)((uint32_t)ms_prom[1] << 16) + (int64_t)(dT / 128.0f * (float)ms_prom[3]);
+	SENS = (int64_t)((uint32_t)ms_prom[0] << 15) + (int64_t)(dT / 256.0f * (float)ms_prom[2]);
+
+	//debug("dT=%f, TEMP=%f, OFF=%d, SENS=%d", dT, TEMP, OFF, SENS);
+
+	if (TEMP < 0) {
+		// second order temperature compensation when under 20 degrees C
+		//2^31 = 2147483648 and 2^31/2 = 1073741824.
+		float T2 = (dT)/1073741824.0f;
+		T2 = T2*(dT)/2.0f;
+		float Aux = TEMP*TEMP;
+		int64_t OFF2 = (int64_t)(2.5f*Aux);
+		int64_t SENS2 = (int64_t)(1.25f*Aux);
+		TEMP = TEMP - T2;
+		OFF = OFF - OFF2;
+		SENS = SENS - SENS2;
+	}
+
+	P = ((float)D1*((float)SENS/2097152.0f) - (float)OFF)/32768.0f;
+	TEMP = (TEMP + 2000.0f) * 0.01f;
+
+	press_cnt++;
+
+	if(press_cnt == 20){
+		ground_press = P;
+		ground_temp = TEMP;
+	}
+	if(press_cnt > 2000)press_cnt = 21;
+
+    float scaling = P/ground_press ;
+    float temp    = ground_temp + 273.15f;
+
+    float ret = 153.8462f * temp * (1.0f - expf(0.190259f * logf(scaling)));
+
+    debug("baro_alt %f", ret);
 
 
 

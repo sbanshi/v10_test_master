@@ -5,11 +5,11 @@
 #include "hal.h"
 #include "ff.h"
 #include "chprintf.h"
+#include "drv/pwm_v10.h"
+#include "drv/sdc_v10.h"
+#include "drv/spi_v10.h"
 #include "Setup.h"
 #include "ff.h"
-#include "spi_v8.h"
-#include "sdc_v8.h"
-#include "pwm_v8.h"
 #include "sbus.h"
 
 static WORKING_AREA(blinkerThread, 128);
@@ -58,16 +58,26 @@ int main(void){
 	chThdCreateStatic(blinkerThread, sizeof(blinkerThread), NORMALPRIO-2, blinker, NULL);
 	delay(500);
 
-//	start_MPU();delay(500);
+	start_MPU();delay(500);
 
 	start_ms_spi();delay(500);
+
+	start_reciever();delay(500);
+
+	start_sdc();delay(500);
+
+	if(fs_ready)log_start();
 
 
 	while(TRUE){
 
-//		get_mpu_data();
+		get_mpu_data();
 
 		get_ms_data();
+
+		print_receiver();
+
+		if(fs_ready)log_update();
 
 		delay(100);
 	}

@@ -1,6 +1,6 @@
-DRVSRC = $(DRVDIR)/spi_v8.cpp \
-		 $(DRVDIR)/sdc_v8.cpp \
+DRVSRC = $(DRVDIR)/spi_v10.cpp \
+		 $(DRVDIR)/sdc_v10.cpp \
 		 $(DRVDIR)/sbus.cpp \
-		 $(DRVDIR)/pwm_v8.cpp
+		 $(DRVDIR)/pwm_v10.cpp
 
 DRVINC = $(DRVDIR)/

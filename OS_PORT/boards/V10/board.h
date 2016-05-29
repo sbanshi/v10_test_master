@@ -313,8 +313,8 @@
  * PC3	- ADC1-IN13		(AF0)
  * PC4	- ADC1-IN14		(AF0)
  * PC5	- NA			(AF0)
- * PC6	- TIM3-CH1		(AF2)
- * PC7	- TIM3-CH2		(AF2)
+ * PC6	- TIM3-CH1		(AF2)RC5
+ * PC7	- TIM3-CH2		(AF2)RC6
  * PC8	- SDIO			(AF12)
  * PC9	- SDIO			(AF12)
  * PC10	- SDIO-D2		(AF12)
@@ -332,8 +332,8 @@
                              PIN_MODE_ALTERNATE(3) | \
                              PIN_MODE_ALTERNATE(4) | \
                              PIN_MODE_ALTERNATE(5) | \
-                             PIN_MODE_ALTERNATE(6) | \
-                             PIN_MODE_ALTERNATE(7) | \
+                             PIN_MODE_INPUT(6) | \
+                             PIN_MODE_INPUT(7) | \
                              PIN_MODE_ALTERNATE(8) | \
                              PIN_MODE_ALTERNATE(9) | \
                              PIN_MODE_ALTERNATE(10) | \
@@ -350,8 +350,8 @@
                              PIN_PUDR_FLOATING(3) | \
                              PIN_PUDR_FLOATING(4) | \
                              PIN_PUDR_FLOATING(5) | \
-                             PIN_PUDR_FLOATING(6) | \
-                             PIN_PUDR_FLOATING(7) | \
+                             PIN_PUDR_PULLDOWN(6) | \
+                             PIN_PUDR_PULLDOWN(7) | \
                              PIN_PUDR_FLOATING(8) | \
                              PIN_PUDR_FLOATING(9) | \
                              PIN_PUDR_FLOATING(10) | \
@@ -367,8 +367,8 @@
 							 PIN_AFIO_AF(3, 0) | \
 							 PIN_AFIO_AF(4, 0) | \
 							 PIN_AFIO_AF(5, 0) | \
-							 PIN_AFIO_AF(6, 2) | \
-							 PIN_AFIO_AF(7, 2))
+							 PIN_AFIO_AF(6, 0) | \
+							 PIN_AFIO_AF(7, 0))
 #define VAL_GPIOC_AFRH		(PIN_AFIO_AF(8, 12) | \
 							 PIN_AFIO_AF(9, 12) | \
 							 PIN_AFIO_AF(10, 12) | \
@@ -461,18 +461,18 @@
  * PE0	- LED			(AF0)
  * PE1	- LED			(AF0)
  * PE2	- SPI4-SCK		(AF5)
- * PE3	- NA			(AF0)
+ * PE3	- NA			(AF5)
  * PE4	- SPI4-NSS		(AF5)
  * PE5	- SPI4-MISO		(AF5)
  * PE6	- SPI4-MOSI		(AF5)
  * PE7	- SBUS_SWITCH	(AF0)
  * PE8	- ST-INT		(AF0)
- * PE9	- TIM1-CH1		(AF0)
+ * PE9	- TIM1-CH1		(AF0)RC1
  * PE10	- NA			(AF0)
- * PE11	- TIM1-CH2		(AF0)
+ * PE11	- TIM1-CH2		(AF0)RC2
  * PE12	- NA			(AF0)
- * PE13	- TIM1-CH3		(AF0)
- * PE14	- TIM1-CH4		(AF0)
+ * PE13	- TIM1-CH3		(AF0)RC3
+ * PE14	- TIM1-CH4		(AF0)RC4
  * PE15	- NA			(AF0)
  *
  */
@@ -482,7 +482,7 @@
 #define VAL_GPIOE_MODER     (PIN_MODE_OUTPUT(0) | \
                              PIN_MODE_OUTPUT(1) | \
                              PIN_MODE_ALTERNATE(2) | \
-                             PIN_MODE_ALTERNATE(3) | \
+                             PIN_MODE_OUTPUT(3) | \
                              PIN_MODE_OUTPUT(4) | \
                              PIN_MODE_ALTERNATE(5) | \
                              PIN_MODE_ALTERNATE(6) | \
@@ -500,7 +500,7 @@
 #define VAL_GPIOE_PUPDR     (PIN_PUDR_PULLDOWN(0) | \
                              PIN_PUDR_PULLDOWN(1) | \
                              PIN_PUDR_PULLUP(2) | \
-                             PIN_PUDR_FLOATING(3) | \
+                             PIN_PUDR_PULLUP(3) | \
                              PIN_PUDR_PULLUP(4) | \
                              PIN_PUDR_PULLUP(5) | \
                              PIN_PUDR_PULLUP(6) | \

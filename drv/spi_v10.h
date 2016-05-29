@@ -4,8 +4,8 @@
  *      Author: nikhil
  */
 
-#ifndef DRV_SPI_V8_H_
-#define DRV_SPI_V8_H_
+#ifndef DRV_SPI_V10_H_
+#define DRV_SPI_V10_H_
 
 #include "ch.h"
 #include "hal.h"
@@ -50,4 +50,4 @@ void start_ms_spi(void);
 
 void get_ms_data(void);
 
-#endif /* DRV_SPI_V8_H_ */
+#endif /* DRV_SPI_V10_H_ */

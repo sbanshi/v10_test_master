@@ -4,8 +4,8 @@
  *      Author: nikhil
  */
 
-#ifndef DRV_SDC_V8_H_
-#define DRV_SDC_V8_H_
+#ifndef DRV_SDC_V10_H_
+#define DRV_SDC_V10_H_
 
 #include "hal.h"
 #include "ch.h"
@@ -19,4 +19,4 @@ void log_start(void);
 
 void log_update(void);
 
-#endif /* DRV_SDC_V8_H_ */
+#endif /* DRV_SDC_V10_H_ */

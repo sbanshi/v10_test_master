@@ -4,7 +4,7 @@
  *      Author: nikhil
  */
 
-#include "pwm_v8.h"
+#include "pwm_v10.h"
 
 extern float rcinput[8];
 
@@ -123,19 +123,19 @@ static const EXTConfig extcfg = {
   {
     {EXT_CH_MODE_DISABLED, NULL},
     {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOA, extcb2},
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOA, extcb1},
     {EXT_CH_MODE_DISABLED, NULL},
     {EXT_CH_MODE_DISABLED, NULL},
     {EXT_CH_MODE_DISABLED, NULL},
     {EXT_CH_MODE_DISABLED, NULL},
+	{EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb5},
+    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOC, extcb6},
     {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb6},
+    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb1},
     {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb5},
+    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb2},
     {EXT_CH_MODE_DISABLED, NULL},
-    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb4},
     {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb3},
+    {EXT_CH_MODE_BOTH_EDGES | EXT_CH_MODE_AUTOSTART | EXT_MODE_GPIOE, extcb4},
     {EXT_CH_MODE_DISABLED, NULL}
   },
 
@@ -178,11 +178,11 @@ static PWMConfig pwmcfg4 = {
 
 void start_servo(void){
 
-	pwmStart(&PWMD3, &pwmcfg3);
-	delay(10);
-
-	pwmStart(&PWMD4, &pwmcfg4);
-	delay(10);
+//	pwmStart(&PWMD3, &pwmcfg3);
+//	delay(10);
+//
+//	pwmStart(&PWMD4, &pwmcfg4);
+//	delay(10);
 
 }
 

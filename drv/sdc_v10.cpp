@@ -4,11 +4,13 @@
  *      Author: nikhil
  */
 
-#include "sdc_v8.h"
+#include "sdc_v10.h"
+
 #include "ff.h"
 
 #include<stdio.h>
-#include "spi_v8.h"
+
+#include "spi_v10.h"
 /*===========================================================================*/
 /* Card insertion monitor.                                                   */
 /*===========================================================================*/
