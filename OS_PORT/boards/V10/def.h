@@ -13,6 +13,8 @@
 
 #define EX_DBG			1
 
+#define CONFIG_GPS 		0
+
 
 #endif /* DEF_H_ */
 

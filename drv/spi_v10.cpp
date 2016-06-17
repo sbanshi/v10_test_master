@@ -37,6 +37,13 @@ static const SPIConfig spi4cfg = {
   SPI_F265
 };
 
+static const SPIConfig spi4cfg_fram = {
+  NULL,
+  GPIOE,
+  4,
+  SPI_F265
+};
+
 void start_spi2(void){
 	spiStart(&SPID2, &spi2cfg);
 	palSetPad(GPIOB, 12);
@@ -195,11 +202,11 @@ void spi_write_byte(uint8_t addr, uint8_t value){
 uint16_t ms_prom[8];
 
 void start_ms_spi(void){
-
+//	palClearPad(GPIOE, 4);
 	spiStart(&SPID4, &spi4cfg);
-	palSetPad(GPIOE, 3);
+//	palSetPad(GPIOE, 3);
 
-	delay(20);
+	delay(2);
 
 	uint8_t txbuf[3], rxbuf[4];
 	txbuf[0] = MS_RESET;
@@ -209,7 +216,7 @@ void start_ms_spi(void){
 	spiSend(&SPID4, 2, txbuf);
 	spiUnselect(&SPID4);
 
-	delay(20);
+	delay(2);
 
 	for(int i = 0; i < 8; i++){
 
@@ -223,6 +230,8 @@ void start_ms_spi(void){
 
 		debug("MS_PROM %u, %u", i, ms_prom[i]);
 	}
+
+//	spiStop(&SPID4);
 
 }
 
@@ -322,6 +331,40 @@ void get_ms_data(void){
     float ret = 153.8462f * temp * (1.0f - expf(0.190259f * logf(scaling)));
 
     debug("baro_alt %f", ret);
+
+}
+
+#define FRAM_WREN	0b00000110
+#define FRAM_WRDI	0b00000100
+#define FRAM_RDSR	0b00000101
+#define FRAM_WRSR	0b00000001
+#define FRAM_READ	0b00000011
+#define FRAM_FSTRD	0b00001011
+#define FRAM_WRITE	0b00000010
+#define FRAM_SLEEP	0b10111001
+#define FRAM_RDID	0b10011111
+
+void start_fram(void){
+//	palClearPad(GPIOE, 3);palSetPad(GPIOE, 4);
+	spiStart(&SPID4, &spi4cfg_fram);
+
+
+
+	delay(20);
+
+	uint8_t txbuf[3], rxbuf[10];
+	txbuf[0] = FRAM_RDID | 0x80;
+
+
+	spiSelect(&SPID4);
+	spiExchange(&SPID4, 10, txbuf, rxbuf);
+
+	spiUnselect(&SPID4);
+//	spiStop(&SPID4);
+
+	for(int i = 0; i < 10; i++){
+		debug("%x", rxbuf[i]);
+	}
 
 
 

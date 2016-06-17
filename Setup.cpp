@@ -364,16 +364,16 @@ void StartTelemetry(void){
 //
 //	delay(20);
 
-//	static SerialConfig gpscfg = {
-//			38400,
-//			0,
-//	        USART_CR2_STOP1_BITS | USART_CR2_LINEN,
-//	        0
-//	};
-//	sdStart(&SD2, &gpscfg);
-//	palSetPadMode(GPIOD, 8, PAL_MODE_ALTERNATE(7));
-//	palSetPadMode(GPIOD, 9, PAL_MODE_ALTERNATE(7));
-//	delay(1000);
+	static SerialConfig gpscfg = {
+			9600,
+			0,
+	        USART_CR2_STOP1_BITS | USART_CR2_LINEN,
+	        0
+	};
+	sdStart(&SD2, &gpscfg);
+	palSetPadMode(GPIOD, 5, PAL_MODE_ALTERNATE(7));
+	palSetPadMode(GPIOD, 6, PAL_MODE_ALTERNATE(7));
+	delay(1000);
 
 //	static SerialConfig sbuscfg = {
 //			100000,
@@ -386,10 +386,12 @@ void StartTelemetry(void){
 //	palSetPadMode(GPIOD, 9, PAL_MODE_ALTERNATE(7));
 //	delay(1000);
 
+#if !CONFIG_GPS
 	debug("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 	debug("Hello Sky!");
 	debug("%s", BOARD_NAME);
 	delay(1000);
+#endif
 //	debug("SD1 Started");
 //	debug("SD3 Started");
 

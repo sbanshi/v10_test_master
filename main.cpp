@@ -12,6 +12,8 @@
 #include "ff.h"
 #include "sbus.h"
 
+extern SerialUSBDriver SDU1;
+
 static WORKING_AREA(blinkerThread, 128);
 static msg_t blinker(void *arg) {
 
@@ -24,6 +26,7 @@ static msg_t blinker(void *arg) {
   }
   return 0;
 }
+
 
 void led_start_pattern(void){
 	palSetPad(GPIOD, 0);
@@ -58,9 +61,11 @@ int main(void){
 	chThdCreateStatic(blinkerThread, sizeof(blinkerThread), NORMALPRIO-2, blinker, NULL);
 	delay(500);
 
+
 	start_MPU();delay(500);
 
 	start_ms_spi();delay(500);
+	start_fram();
 
 	start_reciever();delay(500);
 
@@ -71,15 +76,22 @@ int main(void){
 
 	while(TRUE){
 
-		get_mpu_data();
+//		get_mpu_data();
 
-		get_ms_data();
+//		get_ms_data();
 
 		print_receiver();
 
-		if(fs_ready)log_update();
+//		start_ms_spi();
+//		start_fram();
+//
+//		if(fs_ready)log_update();
 
 		delay(100);
+
+
+		delay(1);
+
 	}
 
 	return 0;

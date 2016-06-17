@@ -50,4 +50,7 @@ void start_ms_spi(void);
 
 void get_ms_data(void);
 
+
+void start_fram(void);
+
 #endif /* DRV_SPI_V10_H_ */
