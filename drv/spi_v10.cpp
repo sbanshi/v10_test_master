@@ -20,21 +20,28 @@ static const SPIConfig spi1cfg = {
   NULL,
   GPIOA,
   4,
-  SPI_F2
+  SPI_F265
 };
 
 static const SPIConfig spi2cfg = {
   NULL,
   GPIOB,
   12,
-  SPI_F2
+  SPI_F128
+};
+
+static const SPIConfig spi2cfg2 = {
+  NULL,
+  GPIOB,
+  12,
+  SPI_F128
 };
 
 static const SPIConfig spi4cfg = {
   NULL,
   GPIOE,
   3,
-  SPI_F265
+  SPI_F2
 };
 
 static const SPIConfig spi4cfg_fram = {
@@ -61,52 +68,72 @@ void get_spi2(void){
 	debug("SPI2 %x, %x, %x", rxbuf[0], rxbuf[1], rxbuf[2]);
 }
 
-
+#define MPU_SPI	SPID2
 
 void start_MPU(void){
-	spiStart(&SPID1, &spi1cfg);
-	palSetPad(GPIOA, 4);
+	delay(100);
+	spiStart(&MPU_SPI, &spi2cfg);
+//	palSetPad(GPIOA, 4);
+	palSetPad(GPIOB, 12);
+	palSetPad(GPIOB, 5);
 
 	delay(20);
 
+	spiAcquireBus(&MPU_SPI);
 
 	uint8_t out = spi_read_byte(MPU_WHO_AM_I);
 
 	debug("MPU_WHO_AM_I %x", out);
 
 	//Set Power management bit
-	uint8_t txbuf[3], rxbuf[3];
+	uint8_t txbuf[3], rxbuf[3]={0,0,0};
 	txbuf[0] = MPU_PWR_MGMT_1;
 	txbuf[1] = 0;
 
-	spiSelect(&SPID1);
-	spiSend(&SPID1, 2, txbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiSend(&MPU_SPI, 2, txbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
 
 	txbuf[0] = MPU_PWR_MGMT_1| 0x80;
 	txbuf[1] = 0;
 	txbuf[2] = 0;
 
-	spiSelect(&SPID1);
-	spiExchange(&SPID1, 2, txbuf, rxbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiExchange(&MPU_SPI, 2, txbuf, rxbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
 
 	debug("MPU_PWR_MGMT_1 %x %x %x", rxbuf[0], rxbuf[1], rxbuf[2]);
 
 	txbuf[0] = MPU_GYRO_CONFIG;
 	txbuf[1] = 3 << 3;
 
-	spiSelect(&SPID1);
-	spiSend(&SPID1, 2, txbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiSend(&MPU_SPI, 2, txbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
 
 	txbuf[0] = MPU_GYRO_CONFIG| 0x80;
 	txbuf[1] = 0;
 	txbuf[2] = 0;
 
-	spiSelect(&SPID1);
-	spiExchange(&SPID1, 3, txbuf, rxbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiExchange(&MPU_SPI, 3, txbuf, rxbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
 
 
 	debug("MPU_GYRO_CONFIG %x %x %x", rxbuf[0], rxbuf[1], rxbuf[2]);
@@ -114,19 +141,32 @@ void start_MPU(void){
 	txbuf[0] = MPU_ACCEL_CONFIG;
 	txbuf[1] = 2 << 3;
 
-	spiSelect(&SPID1);
-	spiSend(&SPID1, 2, txbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiSend(&MPU_SPI, 2, txbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
 
 	txbuf[0] = MPU_ACCEL_CONFIG| 0x80;
 	txbuf[1] = 0;
 	txbuf[2] = 0;
 
-	spiSelect(&SPID1);
-	spiExchange(&SPID1, 2, txbuf, rxbuf);
-	spiUnselect(&SPID1);
+	palClearPad(GPIOB, 12);
+//	spiSelect(&MPU_SPI);
+	spiExchange(&MPU_SPI, 2, txbuf, rxbuf);
+//	spiUnselect(&MPU_SPI);
+	palSetPad(GPIOB, 12);
+
+	delay(20);
+
+	spiReleaseBus(&MPU_SPI);
 
 	debug("MPU_ACCEL_CONFIG %x %x %x", rxbuf[0], rxbuf[1], rxbuf[2]);
+
+	delay(100);
+	spiStart(&MPU_SPI, &spi2cfg2);
 
 }
 
@@ -143,9 +183,9 @@ void get_mpu_data(void){
 	txbuf[1] = 0;
 	txbuf[2] = 0;
 
-	spiSelect(&SPID1);
-	spiExchange(&SPID1, 15, txbuf, rxbuf);
-	spiUnselect(&SPID1);
+	spiSelect(&MPU_SPI);
+	spiExchange(&MPU_SPI, 15, txbuf, rxbuf);
+	spiUnselect(&MPU_SPI);
 
 	accel_x = (rxbuf[1] << 8 ) + rxbuf[2];
 	accel_y = (rxbuf[3] << 8 ) + rxbuf[4];
@@ -162,9 +202,10 @@ void get_mpu_data(void){
 	gy = gyro_y*(0.0174532f / 16.4f);
 	gz = gyro_z*(0.0174532f / 16.4f);
 
+	uint32_t time_now = millis();
 
 //	debug("MPU %d %d %d %d %d %d", accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z);
-	debug("MPU %f %f %f %f %f %f", ax, ay, az, gx, gy, gz);
+	debug("MPU %f %f %f %f %f %f, %d", ax, ay, az, gx, gy, gz, time_now);
 
 }
 
@@ -175,9 +216,9 @@ uint8_t spi_read_byte(uint8_t addr){
 	txbuf[1] = 0;
 	txbuf[2] = 0;
 
-	spiSelect(&SPID1);
-	spiExchange(&SPID1, 3, txbuf, rxbuf);
-	spiUnselect(&SPID1);
+	spiSelect(&MPU_SPI);
+	spiExchange(&MPU_SPI, 3, txbuf, rxbuf);
+	spiUnselect(&MPU_SPI);
 
 	debug("%x, %x, %x", rxbuf[0], rxbuf[1], rxbuf[2]);
 
@@ -192,46 +233,63 @@ void spi_write_byte(uint8_t addr, uint8_t value){
 	txbuf[0] = addr;
 	txbuf[1] = value;
 
-    spiSelect(&SPID1);
-    spiSend(&SPID1, 2, txbuf);
-    spiUnselect(&SPID1);
+    spiSelect(&MPU_SPI);
+    spiSend(&MPU_SPI, 2, txbuf);
+    spiUnselect(&MPU_SPI);
 
 
 }
 
+#define MS_SPI	SPID2
+
 uint16_t ms_prom[8];
 
 void start_ms_spi(void){
-//	palClearPad(GPIOE, 4);
-	spiStart(&SPID4, &spi4cfg);
+	delay(100);
+	spiStart(&MS_SPI, &spi2cfg);
 //	palSetPad(GPIOE, 3);
+//	palSetPad(GPIOE, 4);
+	palSetPad(GPIOB, 5);
+	palSetPad(GPIOB, 12);
 
 	delay(2);
 
 	uint8_t txbuf[3], rxbuf[4];
 	txbuf[0] = MS_RESET;
 
+	spiAcquireBus(&MS_SPI);
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	palClearPad(GPIOB, 5);
+//	spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+//	spiUnselect(&MS_SPI);
+	palSetPad(GPIOB, 5);
 
-	delay(2);
+	delay(20);
 
 	for(int i = 0; i < 8; i++){
 
 		txbuf[0] = MS_PROM + (i << 1);
 
-		spiSelect(&SPID4);
-		spiExchange(&SPID4, 4, txbuf, rxbuf);
-		spiUnselect(&SPID4);
+		palClearPad(GPIOB, 5);
+//		spiSelect(&MS_SPI);
+		spiExchange(&MS_SPI, 4, txbuf, rxbuf);
+//		spiUnselect(&MS_SPI);
+		palSetPad(GPIOB, 5);
 
 		ms_prom[i] = (uint16_t)((rxbuf[1] << 8) | (rxbuf[2]));
 
 		debug("MS_PROM %u, %u", i, ms_prom[i]);
+
+		delay(10);
 	}
 
+	spiReleaseBus(&MS_SPI);
+
 //	spiStop(&SPID4);
+
+	delay(100);
+	spiStart(&MS_SPI, &spi2cfg2);
 
 }
 
@@ -245,17 +303,21 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D1_1024;
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	palClearPad(GPIOB, 5);
+//		spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+	//		spiUnselect(&MS_SPI);
+			palSetPad(GPIOB, 5);
 
-	delay(10);
+//	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	spiSelect(&SPID4);
-	spiExchange(&SPID4, 6, txbuf, rxbuf);
-	spiUnselect(&SPID4);
+	palClearPad(GPIOB, 5);
+//		spiSelect(&MS_SPI);
+	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
+	//		spiUnselect(&MS_SPI);
+			palSetPad(GPIOB, 5);
 
 	D1 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
@@ -265,21 +327,26 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D2_1024;
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	palClearPad(GPIOB, 5);
+//		spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+	//		spiUnselect(&MS_SPI);
+			palSetPad(GPIOB, 5);
 
-	delay(10);
+//	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	spiSelect(&SPID4);
-	spiExchange(&SPID4, 6, txbuf, rxbuf);
-	spiUnselect(&SPID4);
+	palClearPad(GPIOB, 5);
+//		spiSelect(&MS_SPI);
+	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
+	//		spiUnselect(&MS_SPI);
+			palSetPad(GPIOB, 5);
 
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
-//	debug("Ms D1 %u, D2 %u", D1, D2);
+	uint32_t time_now = millis();
+	debug("Ms D1 %u, D2 %u, %d", D1, D2, time_now);
 
 	float dT;
 	float TEMP;
@@ -299,7 +366,7 @@ void get_ms_data(void){
 	OFF = (int64_t)((uint32_t)ms_prom[1] << 16) + (int64_t)(dT / 128.0f * (float)ms_prom[3]);
 	SENS = (int64_t)((uint32_t)ms_prom[0] << 15) + (int64_t)(dT / 256.0f * (float)ms_prom[2]);
 
-	//debug("dT=%f, TEMP=%f, OFF=%d, SENS=%d", dT, TEMP, OFF, SENS);
+//	debug("dT=%f, TEMP=%f, OFF=%d, SENS=%d", dT, TEMP, OFF, SENS);
 
 	if (TEMP < 0) {
 		// second order temperature compensation when under 20 degrees C
@@ -330,7 +397,7 @@ void get_ms_data(void){
 
     float ret = 153.8462f * temp * (1.0f - expf(0.190259f * logf(scaling)));
 
-    debug("baro_alt %f", ret);
+//    debug("baro_alt, temp %f, %f", ret, temp);
 
 }
 

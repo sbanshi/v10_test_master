@@ -364,7 +364,7 @@ void StartTelemetry(void){
 //
 //	delay(20);
 
-	static SerialConfig gpscfg = {
+/*	static SerialConfig gpscfg = {
 			9600,
 			0,
 	        USART_CR2_STOP1_BITS | USART_CR2_LINEN,
@@ -373,7 +373,7 @@ void StartTelemetry(void){
 	sdStart(&SD2, &gpscfg);
 	palSetPadMode(GPIOD, 5, PAL_MODE_ALTERNATE(7));
 	palSetPadMode(GPIOD, 6, PAL_MODE_ALTERNATE(7));
-	delay(1000);
+	delay(1000);*/
 
 //	static SerialConfig sbuscfg = {
 //			100000,

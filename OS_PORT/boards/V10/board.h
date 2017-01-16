@@ -241,14 +241,14 @@
                              PIN_MODE_ALTERNATE(2) | \
                              PIN_MODE_ALTERNATE(3) | \
                              PIN_MODE_ALTERNATE(4) | \
-                             PIN_MODE_ALTERNATE(5) | \
+                             PIN_MODE_OUTPUT(5) | \
                              PIN_MODE_ALTERNATE(6) | \
                              PIN_MODE_ALTERNATE(7) | \
                              PIN_MODE_ALTERNATE(8) | \
                              PIN_MODE_ALTERNATE(9) | \
                              PIN_MODE_ALTERNATE(10) | \
                              PIN_MODE_ALTERNATE(11) | \
-                             PIN_MODE_ALTERNATE(12) | \
+                             PIN_MODE_OUTPUT(12) | \
                              PIN_MODE_ALTERNATE(13) | \
                              PIN_MODE_ALTERNATE(14) | \
                              PIN_MODE_ALTERNATE(15))
@@ -274,7 +274,7 @@
                              PIN_PUDR_PULLDOWN(2) | \
                              PIN_PUDR_FLOATING(3) | \
                              PIN_PUDR_FLOATING(4) | \
-                             PIN_PUDR_FLOATING(5) | \
+                             PIN_PUDR_PULLUP(5) | \
                              PIN_PUDR_FLOATING(6) | \
                              PIN_PUDR_FLOATING(7) | \
                              PIN_PUDR_FLOATING(8) | \
@@ -298,7 +298,7 @@
 							 PIN_AFIO_AF(9, 4) | \
 							 PIN_AFIO_AF(10, 4) | \
 							 PIN_AFIO_AF(11, 4) | \
-							 PIN_AFIO_AF(12, 5) | \
+							 PIN_AFIO_AF(12, 0) | \
 							 PIN_AFIO_AF(13, 5) | \
 							 PIN_AFIO_AF(14, 5) | \
 		                     PIN_AFIO_AF(15, 5))

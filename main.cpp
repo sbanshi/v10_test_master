@@ -21,7 +21,8 @@ static msg_t blinker(void *arg) {
   chRegSetThreadName("blinker");
 
   while (TRUE) {
-	  palTogglePad(GPIOD, 0);
+//	  palTogglePad(GPIOD, 0);
+	  palTogglePad(GPIOE, 0);
 	  delay(fs_ready ? 500 : 125);
   }
   return 0;
@@ -29,7 +30,7 @@ static msg_t blinker(void *arg) {
 
 
 void led_start_pattern(void){
-	palSetPad(GPIOD, 0);
+/*	palSetPad(GPIOD, 0);
 	palSetPad(GPIOD, 1);
 
 	delay(500);
@@ -45,7 +46,26 @@ void led_start_pattern(void){
 	delay(500);
 
 	palClearPad(GPIOD, 0);
-	palClearPad(GPIOD, 1);
+	palClearPad(GPIOD, 1);*/
+
+	palSetPad(GPIOE, 0);
+	palSetPad(GPIOE, 1);
+
+	delay(500);
+
+	palClearPad(GPIOE, 0);
+	palClearPad(GPIOE, 1);
+
+	delay(500);
+
+	palSetPad(GPIOE, 0);
+	palSetPad(GPIOE, 1);
+
+	delay(500);
+
+	palClearPad(GPIOE, 0);
+	palClearPad(GPIOE, 1);
+
 }
 
 
@@ -61,33 +81,33 @@ int main(void){
 	chThdCreateStatic(blinkerThread, sizeof(blinkerThread), NORMALPRIO-2, blinker, NULL);
 	delay(500);
 
+	start_ms_spi();delay(500);
 
 	start_MPU();delay(500);
 
-	start_ms_spi();delay(500);
-	start_fram();
-
-	start_reciever();delay(500);
-
-	start_sdc();delay(500);
-
-	if(fs_ready)log_start();
+//	start_fram();
+//
+//	start_reciever();delay(500);
+//
+//	start_sdc();delay(500);
+//
+//	if(fs_ready)log_start();
 
 
 	while(TRUE){
 
-//		get_mpu_data();
+		get_mpu_data();
 
-//		get_ms_data();
+		get_ms_data();
 
-		print_receiver();
+//		print_receiver();
 
 //		start_ms_spi();
 //		start_fram();
 //
 //		if(fs_ready)log_update();
 
-		delay(100);
+//		delay(100);
 
 
 		delay(1);
