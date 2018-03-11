@@ -75,7 +75,7 @@ void start_MPU(void){
 	spiStart(&MPU_SPI, &spi2cfg);
 //	palSetPad(GPIOA, 4);
 	palSetPad(GPIOB, 12);
-	palSetPad(GPIOB, 5);
+	palSetPad(GPIOE, 12);
 
 	delay(20);
 
@@ -249,7 +249,7 @@ void start_ms_spi(void){
 	spiStart(&MS_SPI, &spi2cfg);
 //	palSetPad(GPIOE, 3);
 //	palSetPad(GPIOE, 4);
-	palSetPad(GPIOB, 5);
+	palSetPad(GPIOE, 12);
 	palSetPad(GPIOB, 12);
 
 	delay(2);
@@ -259,11 +259,11 @@ void start_ms_spi(void){
 
 	spiAcquireBus(&MS_SPI);
 
-	palClearPad(GPIOB, 5);
+	palClearPad(GPIOE, 12);
 //	spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 //	spiUnselect(&MS_SPI);
-	palSetPad(GPIOB, 5);
+	palSetPad(GPIOE, 12);
 
 	delay(20);
 
@@ -271,11 +271,11 @@ void start_ms_spi(void){
 
 		txbuf[0] = MS_PROM + (i << 1);
 
-		palClearPad(GPIOB, 5);
+		palClearPad(GPIOE, 12);
 //		spiSelect(&MS_SPI);
 		spiExchange(&MS_SPI, 4, txbuf, rxbuf);
 //		spiUnselect(&MS_SPI);
-		palSetPad(GPIOB, 5);
+		palSetPad(GPIOE, 12);
 
 		ms_prom[i] = (uint16_t)((rxbuf[1] << 8) | (rxbuf[2]));
 
@@ -303,21 +303,21 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D1_1024;
 
-	palClearPad(GPIOB, 5);
+	palClearPad(GPIOE, 12);
 //		spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOB, 5);
+			palSetPad(GPIOE, 12);
 
 //	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	palClearPad(GPIOB, 5);
+	palClearPad(GPIOE, 12);
 //		spiSelect(&MS_SPI);
 	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOB, 5);
+			palSetPad(GPIOE, 12);
 
 	D1 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
@@ -327,21 +327,21 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D2_1024;
 
-	palClearPad(GPIOB, 5);
+	palClearPad(GPIOE, 12);
 //		spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOB, 5);
+			palSetPad(GPIOE, 12);
 
 //	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	palClearPad(GPIOB, 5);
+	palClearPad(GPIOE, 12);
 //		spiSelect(&MS_SPI);
 	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOB, 5);
+			palSetPad(GPIOE, 12);
 
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 

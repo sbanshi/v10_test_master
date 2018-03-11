@@ -46,7 +46,7 @@
 
 
 
-#define STM32_PLLM_VALUE                    16
+#define STM32_PLLM_VALUE                    24
 
 
 #define STM32_PLLN_VALUE                    336

@@ -22,7 +22,7 @@ static msg_t blinker(void *arg) {
 
   while (TRUE) {
 //	  palTogglePad(GPIOD, 0);
-	  palTogglePad(GPIOE, 0);
+	  palTogglePad(GPIOC, 5);
 	  delay(fs_ready ? 500 : 125);
   }
   return 0;
@@ -48,23 +48,23 @@ void led_start_pattern(void){
 	palClearPad(GPIOD, 0);
 	palClearPad(GPIOD, 1);*/
 
-	palSetPad(GPIOE, 0);
-	palSetPad(GPIOE, 1);
+	palSetPad(GPIOC, 5);
+	palSetPad(GPIOE, 10);
 
 	delay(500);
 
-	palClearPad(GPIOE, 0);
-	palClearPad(GPIOE, 1);
+	palClearPad(GPIOC, 5);
+	palClearPad(GPIOE, 10);
 
 	delay(500);
 
-	palSetPad(GPIOE, 0);
-	palSetPad(GPIOE, 1);
+	palSetPad(GPIOC, 5);
+	palSetPad(GPIOE, 10);
 
 	delay(500);
 
-	palClearPad(GPIOE, 0);
-	palClearPad(GPIOE, 1);
+	palClearPad(GPIOC, 5);
+	palClearPad(GPIOE, 10);
 
 }
 

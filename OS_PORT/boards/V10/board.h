@@ -47,7 +47,7 @@
 #define STM32_LSECLK            0
 
 
-#define STM32_HSECLK            16000000
+#define STM32_HSECLK            24000000
 
 
 /*
@@ -224,8 +224,8 @@
  * PB3  - JTDO-SWO		    (AF0)
  * PB4  - NJRST		        (AF0)
  * PB5	- NA
- * PB6	- USART1-TX			(AF7)
- * PB7	- USART1-RX			(AF7)
+ * PB6	- USART1-TX			(AF7) //-- temp opendrain
+ * PB7	- USART1-RX			(AF7) //-- temp opendrain
  * PB8  - I2C1-SCL    		(AF4)
  * PB9  - I2C1-SDA       	(AF4)
  * PB10 - I2C2-SCL			(AF4)
@@ -242,8 +242,8 @@
                              PIN_MODE_ALTERNATE(3) | \
                              PIN_MODE_ALTERNATE(4) | \
                              PIN_MODE_OUTPUT(5) | \
-                             PIN_MODE_ALTERNATE(6) | \
-                             PIN_MODE_ALTERNATE(7) | \
+                             PIN_MODE_INPUT(6) | \
+                             PIN_MODE_INPUT(7) | \
                              PIN_MODE_ALTERNATE(8) | \
                              PIN_MODE_ALTERNATE(9) | \
                              PIN_MODE_ALTERNATE(10) | \
@@ -275,8 +275,8 @@
                              PIN_PUDR_FLOATING(3) | \
                              PIN_PUDR_FLOATING(4) | \
                              PIN_PUDR_PULLUP(5) | \
-                             PIN_PUDR_FLOATING(6) | \
-                             PIN_PUDR_FLOATING(7) | \
+                             PIN_PUDR_PULLUP(6) | \
+                             PIN_PUDR_PULLUP(7) | \
                              PIN_PUDR_FLOATING(8) | \
                              PIN_PUDR_FLOATING(9) | \
                              PIN_PUDR_FLOATING(10) | \
@@ -292,8 +292,8 @@
 							 PIN_AFIO_AF(3, 0) | \
 							 PIN_AFIO_AF(4, 0) | \
 							 PIN_AFIO_AF(5, 0) | \
-							 PIN_AFIO_AF(6, 7) | \
-							 PIN_AFIO_AF(7, 7))
+							 PIN_AFIO_AF(6, 0) | \
+							 PIN_AFIO_AF(7, 0))
 #define VAL_GPIOB_AFRH      (PIN_AFIO_AF(8, 4) | \
 							 PIN_AFIO_AF(9, 4) | \
 							 PIN_AFIO_AF(10, 4) | \
@@ -331,7 +331,7 @@
                              PIN_MODE_ALTERNATE(2) | \
                              PIN_MODE_ALTERNATE(3) | \
                              PIN_MODE_ALTERNATE(4) | \
-                             PIN_MODE_ALTERNATE(5) | \
+                             PIN_MODE_OUTPUT(5) | \
                              PIN_MODE_INPUT(6) | \
                              PIN_MODE_INPUT(7) | \
                              PIN_MODE_ALTERNATE(8) | \
@@ -349,7 +349,7 @@
                              PIN_PUDR_FLOATING(2) | \
                              PIN_PUDR_FLOATING(3) | \
                              PIN_PUDR_FLOATING(4) | \
-                             PIN_PUDR_FLOATING(5) | \
+                             PIN_PUDR_PULLDOWN(5) | \
                              PIN_PUDR_PULLDOWN(6) | \
                              PIN_PUDR_PULLDOWN(7) | \
                              PIN_PUDR_FLOATING(8) | \
@@ -489,9 +489,9 @@
                              PIN_MODE_OUTPUT(7) | \
                              PIN_MODE_ALTERNATE(8) | \
                              PIN_MODE_INPUT(9) | \
-                             PIN_MODE_ALTERNATE(10) | \
+                             PIN_MODE_OUTPUT(10) | \
                              PIN_MODE_INPUT(11) | \
-                             PIN_MODE_ALTERNATE(12) | \
+                             PIN_MODE_OUTPUT(12) | \
                              PIN_MODE_INPUT(13) | \
                              PIN_MODE_INPUT(14) | \
                              PIN_MODE_ALTERNATE(15))
@@ -507,9 +507,9 @@
                              PIN_PUDR_FLOATING(7) | \
                              PIN_PUDR_FLOATING(8) | \
                              PIN_PUDR_PULLDOWN(9) | \
-                             PIN_PUDR_FLOATING(10) | \
+                             PIN_PUDR_PULLDOWN(10) | \
                              PIN_PUDR_PULLDOWN(11) | \
-                             PIN_PUDR_FLOATING(12) | \
+                             PIN_PUDR_PULLUP(12) | \
                              PIN_PUDR_PULLDOWN(13) | \
                              PIN_PUDR_PULLDOWN(14) | \
                              PIN_PUDR_FLOATING(15))
