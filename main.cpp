@@ -83,7 +83,7 @@ int main(void){
 
 	start_ms_spi();delay(500);
 
-	start_MPU();delay(500);
+//	start_MPU();delay(500);
 
 //	start_fram();
 //
@@ -96,7 +96,7 @@ int main(void){
 
 	while(TRUE){
 
-		get_mpu_data();
+//		get_mpu_data();
 
 		get_ms_data();
 

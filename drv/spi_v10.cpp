@@ -25,14 +25,14 @@ static const SPIConfig spi1cfg = {
 
 static const SPIConfig spi2cfg = {
   NULL,
-  GPIOB,
+  GPIOE,
   12,
   SPI_F128
 };
 
 static const SPIConfig spi2cfg2 = {
   NULL,
-  GPIOB,
+  GPIOE,
   12,
   SPI_F128
 };
@@ -346,7 +346,7 @@ void get_ms_data(void){
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
 	uint32_t time_now = millis();
-	debug("Ms D1 %u, D2 %u, %d", D1, D2, time_now);
+//	debug("Ms D1 %u, D2 %u, %d", D1, D2, time_now);
 
 	float dT;
 	float TEMP;
@@ -397,7 +397,7 @@ void get_ms_data(void){
 
     float ret = 153.8462f * temp * (1.0f - expf(0.190259f * logf(scaling)));
 
-//    debug("baro_alt, temp %f, %f", ret, temp);
+    debug("baro_alt, temp %f, %f", ret, temp); delay(1000);
 
 }
 
