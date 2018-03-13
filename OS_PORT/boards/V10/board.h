@@ -414,7 +414,7 @@
                              PIN_MODE_ALTERNATE(8) | \
                              PIN_MODE_ALTERNATE(9) | \
                              PIN_MODE_ALTERNATE(10) | \
-                             PIN_MODE_ALTERNATE(11) | \
+                             PIN_MODE_OUTPUT(11) | \
                              PIN_MODE_ALTERNATE(12) | \
                              PIN_MODE_ALTERNATE(13) | \
                              PIN_MODE_ALTERNATE(14) | \
@@ -432,7 +432,7 @@
                              PIN_PUDR_FLOATING(8) | \
                              PIN_PUDR_FLOATING(9) | \
                              PIN_PUDR_FLOATING(10) | \
-                             PIN_PUDR_FLOATING(11) | \
+                             PIN_PUDR_PULLUP(11) | \
                              PIN_PUDR_FLOATING(12) | \
                              PIN_PUDR_FLOATING(13) | \
                              PIN_PUDR_FLOATING(14) | \
@@ -494,7 +494,7 @@
                              PIN_MODE_OUTPUT(12) | \
                              PIN_MODE_INPUT(13) | \
                              PIN_MODE_INPUT(14) | \
-                             PIN_MODE_ALTERNATE(15))
+                             PIN_MODE_OUTPUT(15))
 #define VAL_GPIOE_OTYPER    0x00000000
 #define VAL_GPIOE_OSPEEDR   0xFFFFFFFF
 #define VAL_GPIOE_PUPDR     (PIN_PUDR_PULLDOWN(0) | \
@@ -512,7 +512,7 @@
                              PIN_PUDR_PULLUP(12) | \
                              PIN_PUDR_PULLDOWN(13) | \
                              PIN_PUDR_PULLDOWN(14) | \
-                             PIN_PUDR_FLOATING(15))
+                             PIN_PUDR_PULLUP(15))
 #define VAL_GPIOE_ODR       0xFFFFFFFF
 #define VAL_GPIOE_AFRL      (PIN_AFIO_AF(0, 0) | \
 							 PIN_AFIO_AF(1, 0) | \

@@ -25,14 +25,14 @@ static const SPIConfig spi1cfg = {
 
 static const SPIConfig spi2cfg = {
   NULL,
-  GPIOE,
+  GPIOB,
   12,
   SPI_F128
 };
 
 static const SPIConfig spi2cfg2 = {
   NULL,
-  GPIOE,
+  GPIOB,
   12,
   SPI_F128
 };
@@ -75,7 +75,7 @@ void start_MPU(void){
 	spiStart(&MPU_SPI, &spi2cfg);
 //	palSetPad(GPIOA, 4);
 	palSetPad(GPIOB, 12);
-	palSetPad(GPIOE, 12);
+	palSetPad(GPIOE, 15);
 
 	delay(20);
 
@@ -205,7 +205,7 @@ void get_mpu_data(void){
 	uint32_t time_now = millis();
 
 //	debug("MPU %d %d %d %d %d %d", accel_x, accel_y, accel_z, gyro_x, gyro_y, gyro_z);
-	debug("MPU %f %f %f %f %f %f, %d", ax, ay, az, gx, gy, gz, time_now);
+	debug("MPU %f %f %f %f %f %f, %d", ax, ay, az, gx, gy, gz, time_now); delay(1000);
 
 }
 
@@ -249,7 +249,7 @@ void start_ms_spi(void){
 	spiStart(&MS_SPI, &spi2cfg);
 //	palSetPad(GPIOE, 3);
 //	palSetPad(GPIOE, 4);
-	palSetPad(GPIOE, 12);
+	palSetPad(GPIOE, 15);
 	palSetPad(GPIOB, 12);
 
 	delay(2);
@@ -259,11 +259,11 @@ void start_ms_spi(void){
 
 	spiAcquireBus(&MS_SPI);
 
-	palClearPad(GPIOE, 12);
+	palClearPad(GPIOE, 15);
 //	spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 //	spiUnselect(&MS_SPI);
-	palSetPad(GPIOE, 12);
+	palSetPad(GPIOE, 15);
 
 	delay(20);
 
@@ -271,11 +271,11 @@ void start_ms_spi(void){
 
 		txbuf[0] = MS_PROM + (i << 1);
 
-		palClearPad(GPIOE, 12);
+		palClearPad(GPIOE, 15);
 //		spiSelect(&MS_SPI);
 		spiExchange(&MS_SPI, 4, txbuf, rxbuf);
 //		spiUnselect(&MS_SPI);
-		palSetPad(GPIOE, 12);
+		palSetPad(GPIOE, 15);
 
 		ms_prom[i] = (uint16_t)((rxbuf[1] << 8) | (rxbuf[2]));
 
@@ -303,21 +303,21 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D1_1024;
 
-	palClearPad(GPIOE, 12);
+	palClearPad(GPIOE, 15);
 //		spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOE, 12);
+			palSetPad(GPIOE, 15);
 
 //	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	palClearPad(GPIOE, 12);
+	palClearPad(GPIOE, 15);
 //		spiSelect(&MS_SPI);
 	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOE, 12);
+			palSetPad(GPIOE, 15);
 
 	D1 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
@@ -327,21 +327,21 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D2_1024;
 
-	palClearPad(GPIOE, 12);
+	palClearPad(GPIOE, 15);
 //		spiSelect(&MS_SPI);
 	spiSend(&MS_SPI, 2, txbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOE, 12);
+			palSetPad(GPIOE, 15);
 
 //	delay(10);
 
 	txbuf[0] = MS_ADC;
 
-	palClearPad(GPIOE, 12);
+	palClearPad(GPIOE, 15);
 //		spiSelect(&MS_SPI);
 	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
 	//		spiUnselect(&MS_SPI);
-			palSetPad(GPIOE, 12);
+			palSetPad(GPIOE, 15);
 
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 

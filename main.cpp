@@ -81,6 +81,11 @@ int main(void){
 	chThdCreateStatic(blinkerThread, sizeof(blinkerThread), NORMALPRIO-2, blinker, NULL);
 	delay(500);
 
+	palSetPad(GPIOB, 12);
+	palSetPad(GPIOE, 12);
+	palSetPad(GPIOD, 11);
+//	palSetPad(GPIOE, 15);
+
 	start_ms_spi();delay(500);
 
 //	start_MPU();delay(500);
@@ -95,6 +100,11 @@ int main(void){
 
 
 	while(TRUE){
+
+/*		palSetPad(GPIOE, 15);
+		delay(5000);
+		palClearPad(GPIOE, 15);
+		delay(5000);*/
 
 //		get_mpu_data();
 
