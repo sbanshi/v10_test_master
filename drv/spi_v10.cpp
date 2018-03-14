@@ -16,18 +16,23 @@
 #define SPI_F128	(SPI_CR1_BR_2 | SPI_CR1_BR_1)
 #define SPI_F265	(SPI_CR1_BR_2 | SPI_CR1_BR_1 | SPI_CR1_BR_0)
 
+#define MS_CFG	spi2cfg
+#define MS_SPI	SPID2
+#define MS_PORT	GPIOE
+#define MS_PIN	15
+
 static const SPIConfig spi1cfg = {
   NULL,
   GPIOA,
   4,
-  SPI_F2
+  SPI_F265
 };
 
 static const SPIConfig spi2cfg = {
   NULL,
-  GPIOB,
-  12,
-  SPI_F2
+  GPIOE,
+  15,
+  SPI_F265
 };
 
 static const SPIConfig spi4cfg = {
@@ -203,41 +208,43 @@ uint16_t ms_prom[8];
 
 void start_ms_spi(void){
 //	palClearPad(GPIOE, 4);
-	spiStart(&SPID4, &spi4cfg);
+	spiStart(&MS_SPI, &MS_CFG);
 //	palSetPad(GPIOE, 3);
 
-	delay(2);
+	delay(200);
 
 	uint8_t txbuf[3], rxbuf[4];
 	txbuf[0] = MS_RESET;
 
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+	spiUnselect(&MS_SPI);
 
-	delay(2);
+	delay(200);
 
 	for(int i = 0; i < 8; i++){
 
 		txbuf[0] = MS_PROM + (i << 1);
 
-		spiSelect(&SPID4);
-		spiExchange(&SPID4, 4, txbuf, rxbuf);
-		spiUnselect(&SPID4);
+		spiSelect(&MS_SPI);
+		spiExchange(&MS_SPI, 4, txbuf, rxbuf);
+		spiUnselect(&MS_SPI);
 
 		ms_prom[i] = (uint16_t)((rxbuf[1] << 8) | (rxbuf[2]));
 
 		debug("MS_PROM %u, %u", i, ms_prom[i]);
+
+		delay(20);
 	}
 
-//	spiStop(&SPID4);
+//	spiStop(&MS_SPI);
 
 }
 
 float ground_press = 1;
 float ground_temp = 25;
-float press_cnt = 0 ;
+uint16_t press_cnt = 0 ;
 void get_ms_data(void){
 
 	uint8_t txbuf[3], rxbuf[18];
@@ -245,17 +252,19 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D1_1024;
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+	spiUnselect(&MS_SPI);
 
-	delay(10);
+	delay(20);
 
 	txbuf[0] = MS_ADC;
 
-	spiSelect(&SPID4);
-	spiExchange(&SPID4, 6, txbuf, rxbuf);
-	spiUnselect(&SPID4);
+	spiSelect(&MS_SPI);
+	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
+	spiUnselect(&MS_SPI);
+
+	delay(20);
 
 	D1 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
@@ -265,17 +274,19 @@ void get_ms_data(void){
 
 	txbuf[0] = MS_D2_1024;
 
-	spiSelect(&SPID4);
-	spiSend(&SPID4, 2, txbuf);
-	spiUnselect(&SPID4);
+	spiSelect(&MS_SPI);
+	spiSend(&MS_SPI, 2, txbuf);
+	spiUnselect(&MS_SPI);
 
-	delay(10);
+	delay(20);
 
 	txbuf[0] = MS_ADC;
 
-	spiSelect(&SPID4);
-	spiExchange(&SPID4, 6, txbuf, rxbuf);
-	spiUnselect(&SPID4);
+	spiSelect(&MS_SPI);
+	spiExchange(&MS_SPI, 6, txbuf, rxbuf);
+	spiUnselect(&MS_SPI);
+
+	delay(20);
 
 	D2 = ((uint32_t)rxbuf[1] << 16) | ((int32_t)rxbuf[2] << 8) | rxbuf[3];
 
@@ -319,11 +330,11 @@ void get_ms_data(void){
 
 	press_cnt++;
 
-	if(press_cnt == 20){
+	if(press_cnt == 20 && ground_press == 1){
 		ground_press = P;
 		ground_temp = TEMP;
 	}
-	if(press_cnt > 2000)press_cnt = 21;
+	if(press_cnt > 2000)press_cnt = 25;
 
     float scaling = P/ground_press ;
     float temp    = ground_temp + 273.15f;
